@@ -1,0 +1,86 @@
+-- Creación de la base de datos
+CREATE DATABASE ganaderia_antioquia;
+
+\c ganaderia_antioquia
+
+-- Tabla Lugar
+CREATE TABLE Lugar (
+    lugar_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    ciudad VARCHAR(50) NOT NULL,
+    departamento VARCHAR(50) NOT NULL,
+    pais VARCHAR(50) NOT NULL
+);
+
+-- Tabla Raza
+CREATE TABLE Raza (
+    raza_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion TEXT
+);
+
+-- Tabla Criador
+CREATE TABLE Criador (
+    criador_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    documento VARCHAR(20) UNIQUE NOT NULL,
+    telefono VARCHAR(20),
+    direccion TEXT,
+    lugar_id INTEGER REFERENCES Lugar(lugar_id)
+);
+
+-- Tabla Comprador
+CREATE TABLE Comprador (
+    comprador_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    documento VARCHAR(20) UNIQUE NOT NULL,
+    telefono VARCHAR(20),
+    direccion TEXT,
+    lugar_id INTEGER REFERENCES Lugar(lugar_id)
+);
+
+-- Tabla Animal
+CREATE TABLE Animal (
+    animal_id SERIAL PRIMARY KEY,
+    codigo_identificacion VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    lugar_nacimiento_id INTEGER NOT NULL REFERENCES Lugar(lugar_id),
+    raza_id INTEGER NOT NULL REFERENCES Raza(raza_id),
+    criador_id INTEGER NOT NULL REFERENCES Criador(criador_id),
+    disponible BOOLEAN DEFAULT TRUE,
+    fecha_compra DATE NOT NULL,
+    CHECK (fecha_compra >= fecha_nacimiento)
+);
+
+-- Tabla Evento
+CREATE TABLE Evento (
+    evento_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    lugar_id INTEGER NOT NULL REFERENCES Lugar(lugar_id),
+    descripcion TEXT,
+    CHECK (fecha_fin >= fecha_inicio)
+);
+
+-- Tabla Participacion
+CREATE TABLE Participacion (
+    participacion_id SERIAL PRIMARY KEY,
+    animal_id INTEGER NOT NULL REFERENCES Animal(animal_id),
+    evento_id INTEGER NOT NULL REFERENCES Evento(evento_id),
+    fecha_participacion DATE NOT NULL,
+    premios TEXT,
+    UNIQUE (animal_id, evento_id)
+);
+
+CREATE TABLE Venta (
+    venta_id SERIAL PRIMARY KEY,
+    animal_id INTEGER UNIQUE NOT NULL REFERENCES Animal(animal_id),
+    criador_id INTEGER NOT NULL REFERENCES Criador(criador_id),
+    comprador_id INTEGER NOT NULL REFERENCES Comprador(comprador_id),
+    fecha_venta DATE NOT NULL,
+    precio DECIMAL(12, 2) NOT NULL,
+    evento_id INTEGER REFERENCES Evento(evento_id),
+    CHECK (precio > 0)
+);

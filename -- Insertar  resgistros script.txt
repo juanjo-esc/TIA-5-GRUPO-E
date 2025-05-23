@@ -1,0 +1,61 @@
+-- Insertar lugares (5 registros)
+INSERT INTO Lugar (nombre, ciudad, departamento, pais) VALUES
+('Hacienda La Aurora', 'Medellín', 'Antioquia', 'Colombia'),
+('Finca El Descanso', 'Rionegro', 'Antioquia', 'Colombia'),
+('Centro de Eventos Plaza Mayor', 'Medellín', 'Antioquia', 'Colombia'),
+('Hacienda Santa María', 'Envigado', 'Antioquia', 'Colombia'),
+('Feria de Manizales', 'Manizales', 'Caldas', 'Colombia');
+
+-- Insertar razas (5 registros)
+INSERT INTO Raza (nombre, descripcion) VALUES
+('Brahmán', 'Raza cebuina adaptada a climas cálidos'),
+('Angus', 'Raza británica de carne de alta calidad'),
+('Holstein', 'Raza lechera de alta producción'),
+('Normando', 'Raza dual carne-leche'),
+('Limousin', 'Raza francesa de carne magra');
+
+-- Insertar criadores (5 registros)
+INSERT INTO Criador (nombre, documento, telefono, direccion, lugar_id) VALUES
+('Juan Pérez', '12345678', '3101234567', 'Vereda La Linda', 1),
+('Carlos Gómez', '87654321', '3207654321', 'Km 12 Vía Las Palmas', 2),
+('María Rodríguez', '13579246', '3159876543', 'Carrera 45 #12-34', 4),
+('Luis Fernández', '24681357', '3001239876', 'Calle 10 #5-67', 1),
+('Ana Martínez', '98765432', '3112223333', 'Autopista Norte Km 8', 3);
+
+-- Insertar compradores (5 registros)
+INSERT INTO Comprador (nombre, documento, telefono, direccion, lugar_id) VALUES
+('Ganadería El Triunfo', '11111111', '3111111111', 'Autopista Norte Km 8', 3),
+('Hacienda Los Alpes', '22222222', '3172222222', 'Vereda Alto de Minas', 2),
+('Agropecuaria La Pradera', '33333333', '3183333333', 'Carrera 80 #45-12', 1),
+('Don Roberto & Cía', '44444444', '3144444444', 'Calle 50 #10-20', 4),
+('Carnes Premium SAS', '55555555', '3155555555', 'Diagonal 25 #40-30', 5);
+
+-- Insertar animales (5 registros)
+INSERT INTO Animal (codigo_identificacion, nombre, fecha_nacimiento, lugar_nacimiento_id, raza_id, criador_id, disponible, fecha_compra) VALUES
+('TORO-001', 'Fuerza', '2020-03-15', 1, 1, 1, FALSE, '2020-04-10'),
+('TORO-002', 'Relámpago', '2019-11-20', 2, 2, 2, TRUE, '2019-12-05'),
+('TORO-003', 'Titán', '2021-01-10', 4, 3, 3, FALSE, '2021-02-15'),
+('TORO-004', 'Rey', '2020-07-22', 1, 4, 4, TRUE, '2020-08-30'),
+('TORO-005', 'Bruto', '2019-05-18', 1, 5, 1, FALSE, '2019-06-20');
+
+-- Insertar eventos (5 registros)
+INSERT INTO Evento (nombre, fecha_inicio, fecha_fin, lugar_id, descripcion) VALUES
+('Feria Nacional Ganadera', '2022-08-01', '2022-08-07', 3, 'Evento anual de ganadería'),
+('ExpoBrahmán 2022', '2022-05-15', '2022-05-18', 5, 'Exposición especializada en raza Brahmán'),
+('Muestra Regional Antioquia', '2022-10-20', '2022-10-23', 3, 'Evento regional de ganado'),
+('Subasta Elite Bovino', '2022-11-10', '2022-11-12', 1, 'Subasta de animales selectos'),
+('Feria Agropecuaria del Café', '2022-07-05', '2022-07-10', 2, 'Evento con enfoque en ganadería de altura');
+
+-- Insertar participaciones (5 registros)
+INSERT INTO Participacion (animal_id, evento_id, fecha_participacion, premios) VALUES
+(1, 1, '2022-08-03', 'Mejor ejemplar Brahmán'),
+(2, 1, '2022-08-04', 'Segundo lugar categoría Angus'),
+(3, 2, '2022-05-16', 'Mejor novillo Holstein'),
+(4, 3, '2022-10-21', 'Primer lugar raza Normando'),
+(5, 4, '2022-11-11', 'Mejor toro Limousin');
+
+-- Insertar ventas (3 registros ya que algunos animales están disponibles)
+INSERT INTO Venta (animal_id, criador_id, comprador_id, fecha_venta, precio, evento_id) VALUES
+(1, 1, 1, '2022-08-06', 15000000, 1),
+(3, 3, 2, '2022-05-17', 18000000, 2),
+(5, 1, 3, '2022-11-11', 22000000, 4);

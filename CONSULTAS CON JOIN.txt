@@ -1,0 +1,64 @@
+-- 1. Listado de animales y los eventos en los que han participado (con premios)
+SELECT 
+    a.nombre AS animal,
+    r.nombre AS raza,
+    e.nombre AS evento,
+    p.fecha_participacion,
+    e.fecha_inicio AS inicio_evento,
+    e.fecha_fin AS fin_evento,
+    p.premios
+FROM 
+    Animal a
+JOIN 
+    Participacion p ON a.animal_id = p.animal_id
+JOIN 
+    Evento e ON p.evento_id = e.evento_id
+JOIN
+    Raza r ON a.raza_id = r.raza_id
+ORDER BY 
+    a.nombre, p.fecha_participacion;
+
+-- 2. Listado completo de animales con su raza asociada y criador
+SELECT 
+    a.codigo_identificacion,
+    a.nombre AS animal,
+    r.nombre AS raza,
+    r.descripcion AS caracteristicas_raza,
+    c.nombre AS criador,
+    a.fecha_nacimiento,
+    CASE 
+        WHEN a.disponible THEN 'Disponible' 
+        ELSE 'Vendido' 
+    END AS estado
+FROM 
+    Animal a
+JOIN 
+    Raza r ON a.raza_id = r.raza_id
+JOIN 
+    Criador c ON a.criador_id = c.criador_id
+ORDER BY 
+    a.disponible DESC, r.nombre, a.nombre;
+
+-- 3. Listado de animales vendidos con fechas clave y evento de venta
+SELECT 
+    a.codigo_identificacion,
+    a.nombre AS animal,
+    a.fecha_nacimiento,
+    a.fecha_compra AS fecha_adquisicion_criador,
+    v.fecha_venta,
+    (v.fecha_venta - a.fecha_nacimiento) AS dias_de_vida_al_venta,
+    e.nombre AS evento_venta,
+    e.fecha_inicio AS inicio_evento,
+    c.nombre AS comprador,
+    v.precio,
+    ROUND(v.precio / ((v.fecha_venta - a.fecha_nacimiento)::numeric, 2) AS valor_por_dia
+FROM 
+    Venta v
+JOIN 
+    Animal a ON v.animal_id = a.animal_id
+JOIN 
+    Evento e ON v.evento_id = e.evento_id
+JOIN 
+    Comprador c ON v.comprador_id = c.comprador_id
+ORDER BY 
+    v.fecha_venta DESC;

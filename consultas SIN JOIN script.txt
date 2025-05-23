@@ -1,0 +1,42 @@
+
+-- 1. Listado de animales ordenados por nombre (alfabético)
+SELECT nombre, fecha_nacimiento, disponible
+FROM Animal
+ORDER BY nombre ASC;
+
+-- 2. Conteo de animales por estado de disponibilidad
+SELECT 
+    disponible,
+    COUNT(*) as cantidad_animales
+FROM Animal
+GROUP BY disponible;
+
+-- 3. Precio promedio de ventas (solo animales vendidos)
+SELECT 
+    AVG(precio) as precio_promedio_ventas
+FROM Venta;
+
+-- 4. Suma total de ventas por año
+SELECT 
+    EXTRACT(YEAR FROM fecha_venta) as año,
+    SUM(precio) as total_ventas
+FROM Venta
+GROUP BY EXTRACT(YEAR FROM fecha_venta)
+ORDER BY año;
+
+-- 5. Eventos ordenados por duración (días) de más largo a más corto
+SELECT 
+    nombre,
+    fecha_inicio,
+    fecha_fin,
+    (fecha_fin - fecha_inicio) as duracion_dias
+FROM Evento
+ORDER BY duracion_dias DESC;
+
+-- 6. Top 3 animales más caros vendidos
+SELECT 
+    animal_id,
+    precio
+FROM Venta
+ORDER BY precio DESC
+LIMIT 3;
